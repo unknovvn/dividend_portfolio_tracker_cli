@@ -9,6 +9,8 @@ type Action int64
 
 const (
 	CheckPortfolioStatus Action = 1
+
+	ExitApplication Action = 9
 )
 
 func main() {
@@ -21,17 +23,17 @@ func main() {
 		case CheckPortfolioStatus:
 			fmt.Println("You have selected chec portfolio status action!")
 			action = askForAction()
-		case 9:
+		case ExitApplication:
 			os.Exit(0)
 		}
 	}
 }
 
 func askForAction() Action {
-	fmt.Print("\nChoose your action (type action number):\n")
+	fmt.Print("\n Choose your action (type action number): \n")
 	fmt.Printf("%v - Check portfolio status \n", CheckPortfolioStatus)
 	fmt.Println()
-	fmt.Println("9 - Exit app")
+	fmt.Printf("%v - Exit app \n", ExitApplication)
 	fmt.Println()
 
 	var action Action
