@@ -2,7 +2,7 @@
 
 # Features implemented
 
-- [ ] Enter stock purchase
+- [x] Enter stock purchase
 - [ ] Enter stock sell
 - [ ] Check portfolio status (with up to date data)
 - TBU
