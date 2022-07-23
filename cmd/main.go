@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dividend_portfolio_tracker_cli/internal/actions"
 	"fmt"
 	"os"
 )
@@ -9,8 +10,8 @@ type Action int64
 
 const (
 	CheckPortfolioStatus Action = 1
-
-	ExitApplication Action = 9
+	PurchaseStock        Action = 2
+	ExitApplication      Action = 9
 )
 
 func main() {
@@ -23,6 +24,9 @@ func main() {
 		case CheckPortfolioStatus:
 			fmt.Println("You have selected chec portfolio status action!")
 			action = askForAction()
+		case PurchaseStock:
+			actions.PromptPurchaseStock()
+			action = askForAction()
 		case ExitApplication:
 			os.Exit(0)
 		}
@@ -32,6 +36,7 @@ func main() {
 func askForAction() Action {
 	fmt.Print("\n Choose your action (type action number): \n")
 	fmt.Printf("%v - Check portfolio status \n", CheckPortfolioStatus)
+	fmt.Printf("%v - Purchase stock \n", PurchaseStock)
 	fmt.Println()
 	fmt.Printf("%v - Exit app \n", ExitApplication)
 	fmt.Println()
