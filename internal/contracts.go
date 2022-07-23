@@ -1,12 +1,18 @@
 package internal
 
 type StockData struct {
-	Ticker       string  `json:"ticker"`
-	Shares       int     `json:"shares"`
-	Price        float64 `json:"price"`
-	PurchaseDate int64   `json:"purchaseDate"`
+	Shares       int       `json:"shares"`
+	Price        float64   `json:"price"`
+	PurchaseDate int64     `json:"purchaseDate"`
+	Operation    Operation `json:"operation"`
 }
 
 type PortfolioData struct {
-	Stocks []StockData `json:"stocks"`
+	Stocks map[string][]StockData `json:"stocks"`
 }
+
+type Operation int
+
+const (
+	PurchaseOperation = 1
+)

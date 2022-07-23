@@ -13,14 +13,19 @@ const portfolio_data_file_path = ".dividend_portfolio_tracker"
 
 func PurchaseStock(ticker string, shares int, price float64, date time.Time) {
 	newStock := internal.StockData{
-		Ticker:       ticker,
 		Shares:       shares,
 		Price:        price,
 		PurchaseDate: date.Unix(),
+		Operation:    internal.PurchaseOperation,
 	}
 
 	portfolio_data := GetPortfolioData()
-	portfolio_data.Stocks = append(portfolio_data.Stocks, newStock)
+
+	if stocks, ok := portfolio_data.Stocks[ticker]; ok {
+		portfolio_data.Stocks[ticker] = append(stocks, newStock)
+	} else {
+		portfolio_data.Stocks[ticker] = []internal.StockData{newStock}
+	}
 
 	err := savePortfolioData(portfolio_data)
 	if err != nil {
@@ -32,7 +37,7 @@ func GetPortfolioData() internal.PortfolioData {
 	path, err := getPortfolioDataFilePath()
 	if err != nil {
 		return internal.PortfolioData{
-			Stocks: []internal.StockData{},
+			Stocks: make(map[string][]internal.StockData),
 		}
 	}
 
@@ -43,7 +48,7 @@ func GetPortfolioData() internal.PortfolioData {
 		}
 
 		return internal.PortfolioData{
-			Stocks: []internal.StockData{},
+			Stocks: make(map[string][]internal.StockData),
 		}
 	} else {
 		var portfolio_data internal.PortfolioData
