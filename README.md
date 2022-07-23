@@ -2,8 +2,8 @@
 
 # Features implemented
 
-- [ ] Create and save portfolio (in file)
-- [ ] Update portfolio
+- [ ] Enter stock purchase
+- [ ] Enter stock sell
 - [ ] Check portfolio status (with up to date data)
 - TBU
 
