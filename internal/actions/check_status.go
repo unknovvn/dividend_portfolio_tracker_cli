@@ -24,6 +24,8 @@ func CheckPortfolioStatus() {
 
 	table.SetStyle(simpletable.StyleCompactLite)
 	fmt.Println(table.String())
+	fmt.Println()
+	printSummary(stock_statuses)
 }
 
 func addTableHeaders(table *simpletable.Table) {
@@ -58,6 +60,15 @@ func addTableBody(table *simpletable.Table, stock_statuses []StockStatus) {
 
 		table.Body.Cells = append(table.Body.Cells, row)
 	}
+}
+
+func printSummary(stock_statuses []StockStatus) {
+	totalBuyValue := 0.0
+	for _, stock_status := range stock_statuses {
+		totalBuyValue += stock_status.BuyValue
+	}
+
+	fmt.Printf("Total portfolio buy value: %v\n", fmt.Sprintf("%.2f $", totalBuyValue))
 }
 
 func getStockStatuses(portfolio_data internal.PortfolioData) []StockStatus {

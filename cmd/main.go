@@ -17,7 +17,7 @@ const (
 )
 
 func main() {
-	fmt.Println("Welcome to dividend portfolio tracker CLI!")
+	fmt.Println("\nWelcome to dividend portfolio tracker CLI!")
 
 	action := askForAction()
 
@@ -41,7 +41,7 @@ func main() {
 }
 
 func askForAction() Action {
-	fmt.Print("\n Choose your action (type action number): \n")
+	fmt.Print("\nChoose your action (type action number): \n")
 	fmt.Printf("%v - Check portfolio status \n", CheckPortfolioStatus)
 	fmt.Printf("%v - Purchase stock \n", PurchaseStock)
 	fmt.Printf("%v - Sell stock \n", SellStock)
