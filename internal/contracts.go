@@ -1,6 +1,6 @@
 package internal
 
-type StockData struct {
+type TransactionData struct {
 	Shares       int       `json:"shares"`
 	Price        float64   `json:"price"`
 	PurchaseDate int64     `json:"purchaseDate"`
@@ -8,7 +8,7 @@ type StockData struct {
 }
 
 type PortfolioData struct {
-	Stocks map[string][]StockData `json:"stocks"`
+	Transactions map[string][]TransactionData `json:"stocks"`
 }
 
 type Operation int

@@ -9,6 +9,7 @@ import (
 type Action int64
 
 const (
+	Retry                Action = 0
 	CheckPortfolioStatus Action = 1
 	PurchaseStock        Action = 2
 	SellStock            Action = 3
@@ -22,8 +23,10 @@ func main() {
 
 	for {
 		switch action {
+		case Retry:
+			action = askForAction()
 		case CheckPortfolioStatus:
-			fmt.Println("You have selected chec portfolio status action!")
+			actions.CheckPortfolioStatus()
 			action = askForAction()
 		case PurchaseStock:
 			actions.PromptPurchaseStock()
@@ -49,6 +52,8 @@ func askForAction() Action {
 	var action Action
 	if _, err := fmt.Scan(&action); err != nil {
 		fmt.Printf("Error occured while selecting action: %v", err)
+
+		return 0
 	}
 
 	return action

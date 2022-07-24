@@ -12,7 +12,7 @@ import (
 const portfolio_data_file_path = ".dividend_portfolio_tracker"
 
 func PurchaseStock(ticker string, shares int, price float64, date time.Time) {
-	newStock := internal.StockData{
+	newStock := internal.TransactionData{
 		Shares:       shares,
 		Price:        price,
 		PurchaseDate: date.Unix(),
@@ -23,7 +23,7 @@ func PurchaseStock(ticker string, shares int, price float64, date time.Time) {
 }
 
 func SellStock(ticker string, shares int, price float64, date time.Time) {
-	newStock := internal.StockData{
+	newStock := internal.TransactionData{
 		Shares:       shares,
 		Price:        price,
 		PurchaseDate: date.Unix(),
@@ -37,7 +37,7 @@ func GetPortfolioData() internal.PortfolioData {
 	path, err := getPortfolioDataFilePath()
 	if err != nil {
 		return internal.PortfolioData{
-			Stocks: make(map[string][]internal.StockData),
+			Transactions: make(map[string][]internal.TransactionData),
 		}
 	}
 
@@ -47,26 +47,34 @@ func GetPortfolioData() internal.PortfolioData {
 			fmt.Printf("Error occured while creating data.json file: %v", err)
 		}
 
-		return internal.PortfolioData{
-			Stocks: make(map[string][]internal.StockData),
+		portfolio_data := internal.PortfolioData{
+			Transactions: make(map[string][]internal.TransactionData),
 		}
+
+		savePortfolioData(portfolio_data)
+
+		return portfolio_data
 	} else {
 		var portfolio_data internal.PortfolioData
 		if err := json.Unmarshal(portfolio_data_content, &portfolio_data); err != nil {
 			fmt.Printf("Unable to unmarshal user data file: %v", err)
+
+			return internal.PortfolioData{
+				Transactions: make(map[string][]internal.TransactionData),
+			}
 		}
 
 		return portfolio_data
 	}
 }
 
-func insertStockOperation(ticker string, newStock internal.StockData) {
+func insertStockOperation(ticker string, newStock internal.TransactionData) {
 	portfolio_data := GetPortfolioData()
 
-	if stocks, ok := portfolio_data.Stocks[ticker]; ok {
-		portfolio_data.Stocks[ticker] = append(stocks, newStock)
+	if stocks, ok := portfolio_data.Transactions[ticker]; ok {
+		portfolio_data.Transactions[ticker] = append(stocks, newStock)
 	} else {
-		portfolio_data.Stocks[ticker] = []internal.StockData{newStock}
+		portfolio_data.Transactions[ticker] = []internal.TransactionData{newStock}
 	}
 
 	err := savePortfolioData(portfolio_data)
