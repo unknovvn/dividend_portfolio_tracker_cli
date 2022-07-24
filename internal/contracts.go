@@ -15,4 +15,5 @@ type Operation int
 
 const (
 	PurchaseOperation = 1
+	SellOperation     = 2
 )

@@ -19,18 +19,18 @@ func PurchaseStock(ticker string, shares int, price float64, date time.Time) {
 		Operation:    internal.PurchaseOperation,
 	}
 
-	portfolio_data := GetPortfolioData()
+	insertStockOperation(ticker, newStock)
+}
 
-	if stocks, ok := portfolio_data.Stocks[ticker]; ok {
-		portfolio_data.Stocks[ticker] = append(stocks, newStock)
-	} else {
-		portfolio_data.Stocks[ticker] = []internal.StockData{newStock}
+func SellStock(ticker string, shares int, price float64, date time.Time) {
+	newStock := internal.StockData{
+		Shares:       shares,
+		Price:        price,
+		PurchaseDate: date.Unix(),
+		Operation:    internal.SellOperation,
 	}
 
-	err := savePortfolioData(portfolio_data)
-	if err != nil {
-		fmt.Printf("Error occured while saving portfolio data: %v", err)
-	}
+	insertStockOperation(ticker, newStock)
 }
 
 func GetPortfolioData() internal.PortfolioData {
@@ -57,6 +57,21 @@ func GetPortfolioData() internal.PortfolioData {
 		}
 
 		return portfolio_data
+	}
+}
+
+func insertStockOperation(ticker string, newStock internal.StockData) {
+	portfolio_data := GetPortfolioData()
+
+	if stocks, ok := portfolio_data.Stocks[ticker]; ok {
+		portfolio_data.Stocks[ticker] = append(stocks, newStock)
+	} else {
+		portfolio_data.Stocks[ticker] = []internal.StockData{newStock}
+	}
+
+	err := savePortfolioData(portfolio_data)
+	if err != nil {
+		fmt.Printf("Error occured while saving portfolio data: %v", err)
 	}
 }
 
