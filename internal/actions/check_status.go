@@ -4,6 +4,7 @@ import (
 	"dividend_portfolio_tracker_cli/internal"
 	"dividend_portfolio_tracker_cli/internal/services"
 	"fmt"
+	"sort"
 
 	"github.com/alexeyco/simpletable"
 )
@@ -37,6 +38,12 @@ func addTableHeaders(table *simpletable.Table) {
 }
 
 func addTableBody(table *simpletable.Table, stock_statuses []StockStatus) {
+
+	sort.Slice(stock_statuses, func(i, j int) bool {
+		// todo: replace with market value
+		return stock_statuses[i].BuyValue > stock_statuses[j].BuyValue
+	})
+
 	for _, stock_status := range stock_statuses {
 		if stock_status.Shares <= 0 {
 			continue
