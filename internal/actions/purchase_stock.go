@@ -18,7 +18,7 @@ func PromptPurchaseStock() {
 	fmt.Println("What is the amount of stocks bought?")
 	scanner.Scan()
 	amount_string := scanner.Text()
-	amount, err := strconv.Atoi(amount_string)
+	amount, err := strconv.ParseFloat(amount_string, 64)
 	if err != nil {
 		fmt.Println("Invalid value inserted for amount")
 		return

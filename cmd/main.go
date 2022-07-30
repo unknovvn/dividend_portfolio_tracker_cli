@@ -13,6 +13,7 @@ const (
 	CheckPortfolioStatus Action = 1
 	PurchaseStock        Action = 2
 	SellStock            Action = 3
+	UpdateApiToken       Action = 8
 	ExitApplication      Action = 9
 )
 
@@ -34,6 +35,9 @@ func main() {
 		case SellStock:
 			actions.PromptSellStock()
 			action = askForAction()
+		case UpdateApiToken:
+			actions.UpdateApiToken()
+			action = askForAction()
 		case ExitApplication:
 			os.Exit(0)
 		}
@@ -46,6 +50,7 @@ func askForAction() Action {
 	fmt.Printf("%v - Purchase stock \n", PurchaseStock)
 	fmt.Printf("%v - Sell stock \n", SellStock)
 	fmt.Println()
+	fmt.Printf("%v - Update API token \n", UpdateApiToken)
 	fmt.Printf("%v - Exit app \n", ExitApplication)
 	fmt.Println()
 

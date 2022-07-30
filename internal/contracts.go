@@ -1,13 +1,14 @@
 package internal
 
 type TransactionData struct {
-	Shares       int       `json:"shares"`
+	Shares       float64   `json:"shares"`
 	Price        float64   `json:"price"`
 	PurchaseDate int64     `json:"purchaseDate"`
 	Operation    Operation `json:"operation"`
 }
 
-type PortfolioData struct {
+type UserData struct {
+	ApiToken     string                       `json:"api_token"`
 	Transactions map[string][]TransactionData `json:"stocks"`
 }
 
