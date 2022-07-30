@@ -4,8 +4,8 @@
 
 ## Overview
 
-[dividend_portfolio_tracker_cli][] is a CLI tool to track dividend portfolio written in go.
-To access the [IEX Cloud API][iexcloudio] an account and token are required.
+[dividend_portfolio_tracker_cli][] is a CLI tool to track dividend portfolio written in GO\
+To access the [IEX Cloud API][iexcloudio] an account and token are required
 
 ## Features implemented
 
