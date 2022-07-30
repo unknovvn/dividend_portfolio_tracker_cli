@@ -1,11 +1,18 @@
 # Dividend portfolio tracker CLI
 
-# Features implemented
+[![GoDoc][godoc badge]][godoc link]
+[![License Badge][license badge]][license]
+
+## Overview
+
+[dividend_portfolio_tracker_cli][] is a CLI tool to track dividend portfolio written in go.
+To access the [IEX Cloud API][iexcloudio] an account and token are required.
+
+## Features implemented
 
 - [x] Enter stock purchase
 - [x] Enter stock sell
-- [ ] Check portfolio status (with up to date data)
-- TBU
+- [x] Check portfolio status (with up to date data)
 
 ## Contributors
 
