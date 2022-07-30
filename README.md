@@ -12,6 +12,8 @@ To access the [IEX Cloud API][iexcloudio] an account and token are required
 - [x] Enter stock purchase
 - [x] Enter stock sell
 - [x] Check portfolio status (with up to date data)
+- [ ] Add '% of portfolio', 'div yield on cost', 'annual dividend' columns to portfolio status page
+- [ ] Add 'gain/loss', 'growth', 'div yield', 'div yield on cost', 'monthly dividend' to portfolio summary
 
 ## Contributors
 
