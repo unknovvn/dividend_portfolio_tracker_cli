@@ -19,7 +19,8 @@ To access the [IEX Cloud API][iexcloudio] an account and token are required
 
 ## Further planned changes:
 
-- [ ] Add '% of portfolio', 'div yield on cost', 'annual dividend', 'diff with 200d dma' columns to portfolio status page
+- [ ] Add '% of portfolio' column to portfolio status page
+- [ ] Add action to see chart of 200dma changes
 - [ ] Add 'gain/loss', 'growth', 'div yield', 'div yield on cost', 'monthly dividend' to portfolio summary
 
 ## Contributors
