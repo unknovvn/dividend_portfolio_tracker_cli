@@ -44,7 +44,9 @@ func addTableHeaders(table *simpletable.Table) {
 			{Align: simpletable.AlignLeft, Text: "Ytd Change"},
 			{Align: simpletable.AlignLeft, Text: "52W High"},
 			{Align: simpletable.AlignLeft, Text: "52W Low"},
-			{Align: simpletable.AlignLeft, Text: "Div Amount"},
+			{Align: simpletable.AlignLeft, Text: "Annual Div"},
+			{Align: simpletable.AlignLeft, Text: "Div Yield"},
+			{Align: simpletable.AlignLeft, Text: "Div Yield on Cost"},
 			{Align: simpletable.AlignLeft, Text: "Div Ex Date"},
 			{Align: simpletable.AlignLeft, Text: "Div Payment Date"},
 		},
@@ -52,10 +54,8 @@ func addTableHeaders(table *simpletable.Table) {
 }
 
 func addTableBody(table *simpletable.Table, stock_statuses []StockStatus) {
-
 	sort.Slice(stock_statuses, func(i, j int) bool {
-		// todo: replace with market value
-		return stock_statuses[i].BuyValue > stock_statuses[j].BuyValue
+		return stock_statuses[i].MarketValue > stock_statuses[j].MarketValue
 	})
 
 	for _, stock_status := range stock_statuses {
@@ -73,10 +73,12 @@ func addTableBody(table *simpletable.Table, stock_statuses []StockStatus) {
 			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f $", stock_status.PeRatio)},
 			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f $", stock_status.DayChange)},
 			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f %%", stock_status.DayChangePercentage)},
-			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f $", stock_status.YtdChange)},
+			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f %%", stock_status.YtdChange)},
 			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f $", stock_status.Week52High)},
 			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f $", stock_status.Week52Low)},
-			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f $", stock_status.DivAmount)},
+			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f $", stock_status.DivAnnual)},
+			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f %%", stock_status.DivYield)},
+			{Align: simpletable.AlignLeft, Text: fmt.Sprintf("%.2f %%", stock_status.DivYOC)},
 			{Align: simpletable.AlignLeft, Text: stock_status.DivExDate},
 			{Align: simpletable.AlignLeft, Text: stock_status.DivPaymentDate},
 		}
@@ -127,11 +129,13 @@ func getStockStatuses(portfolio_data internal.UserData) []StockStatus {
 				newStockStatus.MarketValue = stock_data.LatestPrice * shares
 				newStockStatus.DayChange = stock_data.DayChange
 				newStockStatus.DayChangePercentage = stock_data.DayChangePercentage * 100
-				newStockStatus.YtdChange = stock_data.YtdChange
+				newStockStatus.YtdChange = stock_data.YtdChange * 100
 				newStockStatus.PeRatio = stock_data.PeRatio
 				newStockStatus.Week52High = stock_data.Week52High
 				newStockStatus.Week52Low = stock_data.Week52Low
-				newStockStatus.DivAmount = stock_data.DivAmount
+				newStockStatus.DivAnnual = stock_data.DivAnnual * shares
+				newStockStatus.DivYield = stock_data.DivYield
+				newStockStatus.DivYOC = stock_data.DivAnnual * shares / buy_value * 100
 				newStockStatus.DivExDate = stock_data.DivExDate
 				newStockStatus.DivPaymentDate = stock_data.DivPaymentDate
 			}
@@ -156,7 +160,9 @@ type StockStatus struct {
 	YtdChange           float64
 	Week52High          float64
 	Week52Low           float64
-	DivAmount           float64
+	DivAnnual           float64
+	DivYield            float64
+	DivYOC              float64
 	DivExDate           string
 	DivPaymentDate      string
 }

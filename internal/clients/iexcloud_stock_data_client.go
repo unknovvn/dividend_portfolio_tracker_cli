@@ -8,12 +8,22 @@ import (
 	"net/http"
 )
 
-const base_client_url = "https://cloud.iexapis.com/stable/stock/"
+type Frequency int
+
+const (
+	base_client_url string = "https://cloud.iexapis.com/stable/stock/"
+
+	annual      Frequency = 1
+	semi_annual Frequency = 2
+	quarterly   Frequency = 4
+	monthly     Frequency = 12
+)
 
 type DividendData struct {
 	Amount      float64 `json:"amount"`
 	ExDate      string  `json:"exDate"`
 	PaymentDate string  `json:"paymentDate"`
+	Frequency   string  `json:"frequency"`
 }
 
 type GetQuoteResponse struct {
@@ -36,7 +46,8 @@ type GetStockDataResponse struct {
 	PeRatio             float64
 	Week52High          float64
 	Week52Low           float64
-	DivAmount           float64
+	DivAnnual           float64
+	DivYield            float64
 	DivExDate           string
 	DivPaymentDate      string
 }
@@ -52,6 +63,8 @@ func GetStockData(ticker string, token string) (GetStockDataResponse, error) {
 		return GetStockDataResponse{}, err
 	}
 
+	div_pay_frequency := parseDivFrequency(div_data.Frequency)
+
 	return GetStockDataResponse{
 		CompanyName:         quote_data.CompanyName,
 		LatestPrice:         quote_data.LatestPrice,
@@ -61,14 +74,15 @@ func GetStockData(ticker string, token string) (GetStockDataResponse, error) {
 		DayChange:           quote_data.Change,
 		DayChangePercentage: quote_data.ChangePercent,
 		YtdChange:           quote_data.YtdChange,
-		DivAmount:           div_data.Amount,
+		DivAnnual:           div_data.Amount * float64(div_pay_frequency),
+		DivYield:            div_data.Amount * float64(div_pay_frequency) / quote_data.LatestPrice * 100,
 		DivExDate:           div_data.ExDate,
 		DivPaymentDate:      div_data.PaymentDate,
 	}, nil
 }
 
 func getDividendData(ticker string, token string) (DividendData, error) {
-	div_request_url := base_client_url + ticker + "/dividends/next" + getTokenQueryParam(token)
+	div_request_url := base_client_url + ticker + "/dividends/1y" + getTokenQueryParam(token)
 	div_response, err := http.Get(div_request_url)
 	if err != nil {
 		fmt.Printf("Error occured while requesting div data: %v\n", err)
@@ -95,6 +109,21 @@ func getDividendData(ticker string, token string) (DividendData, error) {
 	}
 
 	return DividendData{}, errors.New("No dividend data was returned for ticker: " + ticker)
+}
+
+func parseDivFrequency(frequency string) Frequency {
+	switch frequency {
+	case "annual":
+		return annual
+	case "semi-annual":
+		return semi_annual
+	case "quarterly":
+		return quarterly
+	case "monthly":
+		return monthly
+	default:
+		return 0
+	}
 }
 
 func getQuoteData(ticker string, token string) (GetQuoteResponse, error) {
